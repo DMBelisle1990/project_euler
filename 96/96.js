@@ -20,9 +20,9 @@ rl.on('line', function (line) {
 		for(var i = 0; i < 7; i+=3) { // construct the square array
 			for(var j = 0; j < 7; j+=3) {
 				var temp = [];
-				temp.push(row[i].slice(j, j+3));
-				temp.push(row[i+1].slice(j, j+3));
-				temp.push(row[i+2].slice(j, j+3));
+				temp.push(row[i].slice(j, j+3),
+						  row[i+1].slice(j, j+3),
+						  row[i+2].slice(j, j+3));
 				sq.push(_.flatten(temp));
 				temp.length = 0;
 			}
@@ -38,16 +38,15 @@ function init() {
 	var k = 0, idx = 0;
 	for(var i = 0; i < row.length; i++) {
 
-    k = Math.floor(i / 3) * 3; // round down to closest multiple of 3
+    	k = Math.floor(i / 3) * 3; // round down to closest multiple of 3
 		for(var j = 0; j < row[0].length; j++, idx++) {
-      if(j % 3 === 0 && j > 0) {
-        k++;
-      }
+		    if(j % 3 === 0 && j > 0) {
+		        k++;
+		    }
 
-			var node = row[i][j];
-			if(node !== '0') {
+			if(row[i][j] !== '0') {
 				board.push(Object.freeze({
-					value: node,
+					value: row[i][j],
 					mutable: false
 				}));
 			} else {
@@ -55,36 +54,54 @@ function init() {
 					value: '',
 					index: idx,
 					mutable: true,
-					row: row[i],
-					col: col[j],
-					sqNum: k,
+					rowIdx: i,
+					colIdx: j,
+					sqIdx: k,
 					remaining: _.difference(base, _.union(row[i], col[j], getSquare(k)))
 				});
 			}
 		}
 
-    console.log('square:', k, getSquare(k));
-
 	}
 
-  solve();
+    solve();
 }
 
 function getSquare(n) {
-  var i = Math.floor(n / 3) * 3;
-  var j = 3 * (n % 3);
-  var square = [];
-  square.push(row[i].slice(j, j+3));
-  square.push(row[i+1].slice(j, j+3));
-  square.push(row[i+2].slice(j, j+3));
-  return _.flatten(square);
+    var i = Math.floor(n / 3) * 3;
+    var j = 3 * (n % 3);
+    var square = [];
+    square.push(row[i].slice(j, j+3), 
+    			row[i+1].slice(j, j+3), 
+    			row[i+2].slice(j, j+3));
+    return _.flatten(square);
 }
 
 function solve() {
-  for(var i = 0; i < board.length; i++) {
-    if(board[i].mutable && board[i].remaining.length === 1) {
-      board[i].value = board[i].remaining[0] + '';
-
-    }
-  }
+	var oneChanged = true;
+	while(oneChanged) {
+		oneChanged = false;
+	    for(var i = 0; i < board.length; i++) {
+	    	if(board[i].mutable) {
+	    		board[i].remaining = _.difference(base, _.union(row[board[i].rowIdx], col[board[i].colIdx], getSquare(board[i].sqIdx)));
+		    	if(board[i].remaining.length === 1) {
+		    		oneChanged = true;
+		        	board[i].value = board[i].remaining[0] + '';
+		        	board[i].mutable = false;
+		        	row[board[i].rowIdx][board[i].colIdx] = board[i].value;
+		        	col[board[i].colIdx][board[i].rowIdx] = board[i].value;
+		    	}
+	    	}
+	  	} 
+  	}
 }
+
+function bruteForce() {
+	
+}
+
+
+
+
+
+
