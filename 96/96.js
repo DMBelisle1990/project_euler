@@ -4,7 +4,6 @@ const fs = require('fs');
 var board = [], row = [], col = [], sq = [];
 var base = ['1','2','3','4','5','6','7','8','9'];
 var lineCounter = 0;
-
 const rl = readline.createInterface({
 	input: fs.createReadStream('sudoku.txt')
 });
@@ -44,7 +43,7 @@ function init() {
       if(j % 3 === 0 && j > 0) {
         k++;
       }
-      
+
 			var node = row[i][j];
 			if(node !== '0') {
 				board.push(Object.freeze({
