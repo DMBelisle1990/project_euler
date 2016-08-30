@@ -1,7 +1,7 @@
 const readline = require('readline');
 const _ = require('underscore');
 const fs = require('fs');
-var board = [], row = [], col = [], sq = [];
+var board = [], row = [], col = [];
 var base = ['1','2','3','4','5','6','7','8','9'];
 var lineCounter = 0;
 const rl = readline.createInterface({
@@ -16,17 +16,6 @@ rl.on('line', function (line) {
 	} else if(lineCounter === 9) {
 		lineCounter++;
 		col = _.zip.apply(_, row); // transpose row to build col
-
-		for(var i = 0; i < 7; i+=3) { // construct the square array
-			for(var j = 0; j < 7; j+=3) {
-				var temp = [];
-				temp.push(row[i].slice(j, j+3),
-						  row[i+1].slice(j, j+3),
-						  row[i+2].slice(j, j+3));
-				sq.push(_.flatten(temp));
-				temp.length = 0;
-			}
-		}
 		init();
 	}
 });
@@ -93,11 +82,11 @@ function solve() {
 		    	}
 	    	}
 	  	} 
-  	}
+  	} 
 }
 
 function bruteForce() {
-	
+
 }
 
 
