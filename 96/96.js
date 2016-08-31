@@ -2,6 +2,7 @@ const readline = require('readline');
 const _ = require('underscore');
 const fs = require('fs');
 var board = [], row = [], col = [];
+var tempLine;
 var base = ['1','2','3','4','5','6','7','8','9'];
 var lineCounter = 0;
 const rl = readline.createInterface({
@@ -11,20 +12,25 @@ const rl = readline.createInterface({
 // For testing only reading a single puzzle atm
 rl.on('line', function (line) {
 	if(lineCounter < 9) {
-		row[lineCounter] = line.split("");
+		if(!!tempLine) {
+			row[lineCounter++] = tempLine;
+			tempLine = null;
+		}
+		row[lineCounter] = line.split('');
 		lineCounter++;
 	} else if(lineCounter === 9) {
-		lineCounter++;
+		lineCounter = 10;
 		col = _.zip.apply(_, row); // transpose row to build col
 		init();
+		tempLine = line.split('');
 	}
 });
 
 
 function init() {
-
-  // k tracks the square number
+  	// k tracks the square number
 	var k = 0, idx = 0;
+	board.length = 0;
 	for(var i = 0; i < row.length; i++) {
 
     	k = Math.floor(i / 3) * 3; // round down to closest multiple of 3
@@ -33,6 +39,7 @@ function init() {
 		        k++;
 		    }
 
+		    // Build the board
 			if(row[i][j] !== '0') {
 				board.push(Object.freeze({
 					value: row[i][j],
@@ -52,9 +59,33 @@ function init() {
 		}
 
 	}
-
     solve();
 }
+
+function solve() {
+	var progressMade = true;
+	while(progressMade) {
+		progressMade = false;
+	    for(var i = 0; i < board.length; i++) {
+
+	    	// Checks if any given spot has only one remaining solution
+	    	if(board[i].mutable) {
+
+	    		board[i].remaining = _.difference(base, _.union(row[board[i].rowIdx], col[board[i].colIdx], getSquare(board[i].sqIdx)));
+		    	if(board[i].remaining.length === 1) {
+		    		progressMade = true;
+		        	fillSlot(i);
+		    	}
+		    	
+	    	}
+
+	  	} 
+  	} 
+}
+
+
+// HELPER
+// FUNCTIONS
 
 function getSquare(n) {
     var i = Math.floor(n / 3) * 3;
@@ -66,23 +97,12 @@ function getSquare(n) {
     return _.flatten(square);
 }
 
-function solve() {
-	var oneChanged = true;
-	while(oneChanged) {
-		oneChanged = false;
-	    for(var i = 0; i < board.length; i++) {
-	    	if(board[i].mutable) {
-	    		board[i].remaining = _.difference(base, _.union(row[board[i].rowIdx], col[board[i].colIdx], getSquare(board[i].sqIdx)));
-		    	if(board[i].remaining.length === 1) {
-		    		oneChanged = true;
-		        	board[i].value = board[i].remaining[0] + '';
-		        	board[i].mutable = false;
-		        	row[board[i].rowIdx][board[i].colIdx] = board[i].value;
-		        	col[board[i].colIdx][board[i].rowIdx] = board[i].value;
-		    	}
-	    	}
-	  	} 
-  	} 
+function fillSlot(i) {
+	board[i].value = board[i].remaining[0] + '';
+	board[i].remaining = [];
+	board[i].mutable = false;
+	row[board[i].rowIdx][board[i].colIdx] = board[i].value;
+	col[board[i].colIdx][board[i].rowIdx] = board[i].value;
 }
 
 function bruteForce() {
