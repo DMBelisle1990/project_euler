@@ -1,7 +1,8 @@
 const readline = require('readline');
 const _ = require('underscore');
 const fs = require('fs');
-var board = [], row = [], col = [], sq = [];
+var board = [], row = [], col = [];
+var tempLine;
 var base = ['1','2','3','4','5','6','7','8','9'];
 var lineCounter = 0;
 const rl = readline.createInterface({
@@ -11,43 +12,37 @@ const rl = readline.createInterface({
 // For testing only reading a single puzzle atm
 rl.on('line', function (line) {
 	if(lineCounter < 9) {
-		row[lineCounter] = line.split("");
+		if(!!tempLine) {
+			row[lineCounter++] = tempLine;
+			tempLine = null;
+		}
+		row[lineCounter] = line.split('');
 		lineCounter++;
 	} else if(lineCounter === 9) {
-		lineCounter++;
+		lineCounter = 10;
 		col = _.zip.apply(_, row); // transpose row to build col
-
-		for(var i = 0; i < 7; i+=3) { // construct the square array
-			for(var j = 0; j < 7; j+=3) {
-				var temp = [];
-				temp.push(row[i].slice(j, j+3));
-				temp.push(row[i+1].slice(j, j+3));
-				temp.push(row[i+2].slice(j, j+3));
-				sq.push(_.flatten(temp));
-				temp.length = 0;
-			}
-		}
 		init();
+		tempLine = line.split('');
 	}
 });
 
 
 function init() {
-
-  // k tracks the square number
+  	// k tracks the square number
 	var k = 0, idx = 0;
+	board.length = 0;
 	for(var i = 0; i < row.length; i++) {
 
-    k = Math.floor(i / 3) * 3; // round down to closest multiple of 3
+    	k = Math.floor(i / 3) * 3; // round down to closest multiple of 3
 		for(var j = 0; j < row[0].length; j++, idx++) {
-      if(j % 3 === 0 && j > 0) {
-        k++;
-      }
+		    if(j % 3 === 0 && j > 0) {
+		        k++;
+		    }
 
-			var node = row[i][j];
-			if(node !== '0') {
+		    // Build the board
+			if(row[i][j] !== '0') {
 				board.push(Object.freeze({
-					value: node,
+					value: row[i][j],
 					mutable: false
 				}));
 			} else {
@@ -55,36 +50,67 @@ function init() {
 					value: '',
 					index: idx,
 					mutable: true,
-					row: row[i],
-					col: col[j],
-					sqNum: k,
+					rowIdx: i,
+					colIdx: j,
+					sqIdx: k,
 					remaining: _.difference(base, _.union(row[i], col[j], getSquare(k)))
 				});
 			}
 		}
 
-    console.log('square:', k, getSquare(k));
-
 	}
-
-  solve();
-}
-
-function getSquare(n) {
-  var i = Math.floor(n / 3) * 3;
-  var j = 3 * (n % 3);
-  var square = [];
-  square.push(row[i].slice(j, j+3));
-  square.push(row[i+1].slice(j, j+3));
-  square.push(row[i+2].slice(j, j+3));
-  return _.flatten(square);
+    solve();
 }
 
 function solve() {
-  for(var i = 0; i < board.length; i++) {
-    if(board[i].mutable && board[i].remaining.length === 1) {
-      board[i].value = board[i].remaining[0] + '';
+	var progressMade = true;
+	while(progressMade) {
+		progressMade = false;
+	    for(var i = 0; i < board.length; i++) {
 
-    }
-  }
+	    	// Checks if any given spot has only one remaining solution
+	    	if(board[i].mutable) {
+
+	    		board[i].remaining = _.difference(base, _.union(row[board[i].rowIdx], col[board[i].colIdx], getSquare(board[i].sqIdx)));
+		    	if(board[i].remaining.length === 1) {
+		    		progressMade = true;
+		        	fillSlot(i);
+		    	}
+		    	
+	    	}
+
+	  	} 
+  	} 
 }
+
+
+// HELPER
+// FUNCTIONS
+
+function getSquare(n) {
+    var i = Math.floor(n / 3) * 3;
+    var j = 3 * (n % 3);
+    var square = [];
+    square.push(row[i].slice(j, j+3), 
+    			row[i+1].slice(j, j+3), 
+    			row[i+2].slice(j, j+3));
+    return _.flatten(square);
+}
+
+function fillSlot(i) {
+	board[i].value = board[i].remaining[0] + '';
+	board[i].remaining = [];
+	board[i].mutable = false;
+	row[board[i].rowIdx][board[i].colIdx] = board[i].value;
+	col[board[i].colIdx][board[i].rowIdx] = board[i].value;
+}
+
+function bruteForce() {
+
+}
+
+
+
+
+
+
