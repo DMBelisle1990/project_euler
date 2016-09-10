@@ -9,7 +9,6 @@ const rl = readline.createInterface({
 	input: fs.createReadStream('sudoku.txt')
 });
 
-// For testing only reading a single puzzle atm
 rl.on('line', function (line) {
 	if(lineCounter < 9) {
 		if(!!tempLine) {
@@ -67,18 +66,19 @@ function solve() {
 	while(progressMade) {
 		progressMade = false;
 	    for(var i = 0; i < board.length; i++) {
-
-	    	// Checks if any given spot has only one remaining solution
 	    	if(board[i].mutable) {
 
+	    		// CHECK 1
+	    		// If each slot has one possible solution, fill it
 	    		board[i].remaining = _.difference(base, _.union(row[board[i].rowIdx], col[board[i].colIdx], getSquare(board[i].sqIdx)));
 		    	if(board[i].remaining.length === 1) {
 		    		progressMade = true;
 		        	fillSlot(i);
 		    	}
+
+		    	// Checks if row, col, or sq has a unique number present
 		    	
 	    	}
-
 	  	} 
   	} 
 }
@@ -95,6 +95,10 @@ function getSquare(n) {
     			row[i+1].slice(j, j+3), 
     			row[i+2].slice(j, j+3));
     return _.flatten(square);
+}
+
+function getUniques(array) {
+	var 
 }
 
 function fillSlot(i) {
