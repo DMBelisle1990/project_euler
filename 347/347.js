@@ -24,13 +24,13 @@ for(var i = 7; i < max/2; i+=2) {
 var ans = 0;
 for(var p = 0; p < primes.length; p++) {
 
-  var pMax = Math.log(max)/Math.log(primes[p])
+  var pMax = Math.log(max) / Math.log(primes[p])
   for(var q = p + 1; q < primes.length; q++) {
     if(primes[p] * primes[q] > max) {
       break;
     }
 
-    var qMax = Math.log(max)/Math.log(primes[q]);
+    var qMax = Math.log(max) / Math.log(primes[q]);
     var best = 0;
     for(var i = 1; i < pMax; i++) {
       for(var j = 1; j < qMax; j++) {
