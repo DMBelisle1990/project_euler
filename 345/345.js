@@ -1,5 +1,3 @@
-_ = require('underscore');
-
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Setup
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,62 +25,15 @@ var stringMatrix = '7  53 183 439 863 \n' +
                    '767 473 103 699 303';
 stringMatrix = stringMatrix.split('\n')
 
-var matrix = {
-  grid: [],
-  filledRows: [],
-  lockedRows: [],
-  sum: 0
-};
+var matrix = []
 for(var i = 0; i < stringMatrix.length; i++) {
-  matrix.grid.push(stringMatrix[i].trim().split(/\s+/).map(Number));
+  matrix.push(stringMatrix[i].trim().split(/\s+/).map(Number));
 }
-matrix.grid = _.zip.apply(_, matrix.grid); //transpose it, not necessary if iterating by rows instead of columns
-
-
-console.log(matrixSum(matrix));
 
 
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 // Implimentation
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-function matrixSum(matrix) {
-  for(var i = 0; i < matrix.grid.length; i++) {
-    var grid = matrix.grid;
-    var col = grid[i];
-    var sorted = grid[i].slice().sort(function(a,b) { return a - b; }).reverse(); //override lex sorting with numeric sorting
-    var paths = [];
-
-    for(var j = 0; j < sorted.length; j++) {
-      var max = sorted[j];
-      var maxIdx = col.indexOf(max);
-      if(matrix.lockedRows.indexOf(maxIdx) !== -1) {
-        continue; // This occurs if we are going backward recursively
-      } else if(matrix.filledRows.indexOf(maxIdx) === -1) {
-        matrix.sum += max;
-        matrix.filledRows.push(maxIdx);
-        paths.push(matrix);
-        break;
-      } else {
-        var submatrix = {
-          grid: matrix.grid.slice(),
-          filledRows: [],
-          lockedRows: matrix.lockedRows.slice(),
-          sum: max
-        }
-        submatrix.lockedRows.push(maxIdx);
-        paths.push(matrixSum(submatrix));
-      }
-
-    }
-
-    for(var j = 0; j < paths.length; j++) {
-      if(paths[j].sum > matrix.sum) {
-        matrix = paths[j];
-        matrix.lockedRows = [];
-      }
-    }
-  }
-
-  return matrix;
-}
+// USE HUNGARIAN ALGORITHM
+// http://www.wikihow.com/Use-the-Hungarian-Algorithm
