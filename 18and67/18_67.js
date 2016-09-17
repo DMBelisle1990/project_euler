@@ -4,7 +4,10 @@ var triangle = [];
 
 fs.readFile("triangle.txt", function(error, data) {
 	content = data.toString().split("\n");
+	console.time('findLongestPath');
 	findLongestPath();
+	console.timeEnd('findLongestPath');
+
 });
 
 function findLongestPath() {
@@ -12,7 +15,6 @@ function findLongestPath() {
 		triangle.push(content[i].split(" ").map(Number));
 	}
 
-	
 	for(var i = triangle.length - 2; i >= 0; i--) {
 		for(var j = 0; j < triangle[i].length; j++) {
 			triangle[i][j] += Math.max(triangle[i+1][j], triangle[i+1][j+1]);
@@ -21,7 +23,3 @@ function findLongestPath() {
 
 	console.log(triangle[0][0]);
 }
-
-
-
-
