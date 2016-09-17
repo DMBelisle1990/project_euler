@@ -8,22 +8,18 @@ fs.readFile("triangle.txt", function(error, data) {
 });
 
 function findLongestPath() {
-	for(var i = 0; i < content.length; i++)
-		triangle.push(content[i].split(" "));
-
-	for(var i = 0; i < triangle.length; i++) 
-		for(var j = 0; j < triangle[i].length; j++) 
-			triangle[i][j] *= 1;
+	for(var i = 0; i < content.length; i++) {
+		triangle.push(content[i].split(" ").map(Number));
+	}
 
 	
-	for(var i = triangle.length - 2; i >= 0; i--) 
-		for(var j = 0; j < triangle[i].length; j++) 
+	for(var i = triangle.length - 2; i >= 0; i--) {
+		for(var j = 0; j < triangle[i].length; j++) {
 			triangle[i][j] += Math.max(triangle[i+1][j], triangle[i+1][j+1]);
-		
-
+		}
+	}
 
 	console.log(triangle[0][0]);
-
 }
 
 
