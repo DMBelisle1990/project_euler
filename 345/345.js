@@ -48,3 +48,6 @@ function hungarian(matrix) {
 function getCover(matrix) {
 
 }
+
+console.log(matrix);
+

@@ -1,33 +1,40 @@
-var primes = [2], isPrime;
-
-for(var i = 3; i < 100000000; i+=2) {
-  isPrime = true;
-  if(i % 5 === 0) {
-    continue;
-  }
-  for(var j = 1; primes[j] <= Math.sqrt(i); j++) {
-    if(i % primes[j] === 0) {
-      isPrime = false;
-      break;
-    }
-  }
-  if(isPrime) {
-    primes.push(i);
-  }
+var primes = [2];
+for(var i = 3; i < 50002; i+=2) {
+	if(i % 5 === 0) {
+		continue;
+	}
+	var add = true;
+	for(var j = 1; primes[j] <= Math.sqrt(i); j++) {
+		if(i % primes[j] === 0) {
+			add = false;
+			break;
+		}
+	}
+	if(add) {
+		primes.push(i);
+	}
 }
 
-var validPrimes = primes.slice(0);
-for(var i = 1; i < validPrimes.length; i++) {
-   if(validPrimes[i] % 10 === 7 || Math.floor((validPrimes[i] / 10) % 10) % 2 === 0) {
-     validPrimes.slice(i,1);
-     i--;
-     continue;
-   }
-   if(primes.indexOf(((validPrimes[i]-1)/2) + 2) === -1) {
-     validPrimes.slice(i,1);
-     i--;
-     continue;
-   }
+console.log('primes done');
+
+var n = 2;
+var sum = 0;
+while(n <= 100000000) {
+	sum += n;
+	for(var i = 1; i < Math.sqrt(n); i++) {
+		if(n % i !== 0) {
+			continue;
+		} else {
+			if(primes.indexOf(i + n / i) > -1) {
+				continue;
+			} else {
+				sum -= n;
+				break;
+			}
+		}
+	}
+	n += (n % 10 === 0 ? 12 : 8);
+	console.log(n);
 }
 
-console.log(validPrimes.length);
+console.log(sum);

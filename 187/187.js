@@ -17,8 +17,6 @@ for(var i = 7; i < max/2; i+=2) {
   }
 }
 
-console.log(primes.length);
-
 var ans = 0;
 for(var i = 0; i < primes.length; i++) {
   for(var j = i; j < primes.length; j++) {
