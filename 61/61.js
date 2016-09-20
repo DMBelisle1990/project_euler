@@ -1,45 +1,64 @@
-var triNums = [], sqNums = [], pentNums = [], hexNums = [], heptNums = [], octNums = [];
-var possibleStarts = [], possibleEnds = [];
-function valid(num) {
+var _ = require('underscore');
+var polyNums = [];
+var possibleStarts = [], possibleEnds = []; // temp arrays used to get all valid nums
+
+/* HELPER FUNCTIONS */
+function inRange(num) {
   return num > 999 && num < 10000 && (num+'')[2] != '0';
 }
 
-for(var i = 10; !triNum || triNum < 10000; i++) {
-  var triNum = (i * (i + 1)) / 2;
-  var sqNum = i * i;
-  var pentNum = (i * (3*i - 1)) / 2;
-  var hexNum = i * (2*i - 1);
-  var heptNum = (i * (5*i - 3)) / 2;
-  var octNum = i * (3*i - 2);
-
-  if(valid(triNum)) {
-    triNums.push(triNum+'');
-  }
-
-  if(valid(sqNum)) {
-    sqNums.push(sqNum+'');
-  }
-
-  if(valid(pentNum)) {
-    pentNums.push(pentNum+'');
-  }
-
-  if(valid(hexNum)) {
-    hexNums.push(hexNum+'');
-  }
-
-  if(valid(heptNum)) {
-    heptNums.push(heptNum+'');
-  }
-
-  if(valid(octNum)) {
-    octNums.push(octNum+'');
-  }
+function valid(num) {
+  num += '';
+  var start = num.substring(0,2);
+  var end = num.substring(2);
+  return validNums.indexOf(start) !== -1 && validNums.indexOf(end) !== -1;
 }
 
-console.log(triNums);
-console.log(sqNums);
-console.log(pentNums);
-console.log(heptNums);
-console.log(hexNums);
-console.log(octNums);
+function getStart(num) {
+  return num.substring(0,2);
+}
+
+function getEnd(num) {
+  return num.substring(2);
+}
+
+function getNthPolyNums(n) {
+  var polyNum = [];
+  polyNum.push((n * (n + 1)) / 2);   // tri
+  polyNum.push(n * n);               // sq
+  polyNum.push((n * (3*n - 1)) / 2); // pent
+  polyNum.push(n * (2*n - 1));       // hex
+  polyNum.push((n * (5*n - 3)) / 2); // hept
+  polyNum.push(n * (3*n - 2));       // oct
+  return polyNum;
+}
+
+/* IMPLIMENTATION */
+for(var i = 10; !polyNum || polyNum[0] < 10000; i++) {
+  var polyNum = getNthPolyNums(i);
+
+  for(var j = 0; j < polyNum.length; j++) {
+    if(typeof polyNums[j] === 'undefined') {
+      polyNums[j] = [];
+    } else {
+      if(inRange(polyNum[j])) {
+        var str = polyNum[j] + '';
+        polyNums[j].push(str);
+        if(possibleStarts.indexOf(str.substring(0, 2)) === -1) {
+          possibleStarts.push(str.substring(0, 2));
+        }
+        if(possibleEnds.indexOf(str.substring(2)) === -1) {
+          possibleEnds.push(str.substring(2));
+        }
+      }
+    }
+  }
+
+}
+
+var validNums = _.intersection(possibleStarts, possibleEnds);
+
+for(var i = 0; i < polyNums.length; i++) {
+  polyNums[i] = polyNums[i].filter( (num) => valid(num) );
+  console.log(polyNums[i].length);
+}
