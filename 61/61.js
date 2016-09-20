@@ -13,7 +13,9 @@ for(var i = 10; !triNum || triNum < 10000; i++) {
   var octNum = i * (3*i - 2);
 
   if(valid(triNum)) {
-    triNums.push(triNum+'');
+    var str = triNum+'';
+    triNums.push(str);
+    
   }
 
   if(valid(sqNum)) {
