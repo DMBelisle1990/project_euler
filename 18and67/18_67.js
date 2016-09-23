@@ -1,25 +1,15 @@
-var fs = require("fs");
-var content;
-var triangle = [];
+var fs = require('fs');
 
-fs.readFile("triangle.txt", function(error, data) {
-	content = data.toString().split("\n");
-	console.time('findLongestPath');
-	findLongestPath();
-	console.timeEnd('findLongestPath');
-
+fs.readFile('triangle.txt', function(error, data) {
+	findLongestPath(data.toString().split('\n'));
 });
 
-function findLongestPath() {
-	for(var i = 0; i < content.length; i++) {
-		triangle.push(content[i].split(" ").map(Number));
-	}
-
+function findLongestPath(triangle) {
+	triangle = triangle.map((row) => row.split(' ').map(Number));
 	for(var i = triangle.length - 2; i >= 0; i--) {
 		for(var j = 0; j < triangle[i].length; j++) {
 			triangle[i][j] += Math.max(triangle[i+1][j], triangle[i+1][j+1]);
 		}
 	}
-
 	console.log(triangle[0][0]);
 }
