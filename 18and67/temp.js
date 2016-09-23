@@ -1,0 +1,1 @@
+require('fs').readFile('t.txt',(e,d)=>{t=(d+'').split('\n');t=t.map(r=>r.split(' ').map(Number));for(i=t.length-2;i>=0;i--)for(j=0;j<t[i].length;j++)t[i][j]+=Math.max(t[i+1][j],t[i+1][j+1]);return[0][0]})
