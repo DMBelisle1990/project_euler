@@ -49,10 +49,9 @@ function findShortestPath() {
 	while(!matrix[length][length].visited) {
 		matrix[x][y].visited = true;
 
-		adjust_weight(x + 1, y, x, y);
-		adjust_weight(x, y + 1, x, y);
-		adjust_weight(x - 1, y, x, y);
-		adjust_weight(x, y - 1, x, y);
+		adjust_weight(x + 1, y, x, y); // move up
+		adjust_weight(x, y + 1, x, y); // move right
+		adjust_weight(x - 1, y, x, y); // move down
 
 		var min = Infinity;
 		// Slower than actual for loops but much more readable
