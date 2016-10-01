@@ -13,6 +13,7 @@ n = 0
   pn2 = pn1
   pn1 = n
 end
+
 puts n
 n = n.to_s.chars.map(&:to_i).inject(0, :+)
 puts n
