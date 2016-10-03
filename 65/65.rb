@@ -1,6 +1,7 @@
 # Due to the repeated fraction pattern for e
 # 1,2,1,1,4,1,1,6,1,....,1,2k,1
 # a simple recursive pattern can be used
+# The numerator blows up very quickly so ruby is used to handle the big ints
 
 pn2 = 2
 pn1 = 3
