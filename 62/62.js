@@ -5,11 +5,11 @@ for(var i = 346; i < 10000; i++) {
   if(n in cubes) {
     cubes[n]++;
     if(cubes[n] == 5) {
-      console.log('called', ans[n]);
+      console.log(ans[n]);
       break;
     }
   } else {
     cubes[n] = 1;
-    ans[n] = i*i*i;
+    ans[n] = i*i*i; // only need to store the smallest cube
   }
 }
