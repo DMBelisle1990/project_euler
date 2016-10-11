@@ -1,21 +1,12 @@
-# ans = 0
-# count = 0
-# p = 0
-# (2..3_333_333).each do |i|
-# 	p = (3*i + 1)/2
-# 	if(Math.sqrt( p*2*(p-i)*(p-i-1) )%1 == 0) 
-# 		ans += (2*p)
-# 	end
-# 	p = (3*i - 1)/2
-# 	if(Math.sqrt( p*2*(p-i)*(p-i+1) )%1 == 0) 
-# 		ans += (2*p)
-# 	end
-# end
-
-# puts ans
-
+ans = 0
 (2..333_333_333).each do |i|
-
+  [-1,1].each do |j|
+    temp = ((3.0*i + j) * (i*1.0 - j)) ** (0.5);
+    if temp % 1 == 0
+      ans += 3*i + j
+      puts i
+    end
+  end
 end
 
-puts "done"
+puts ans
