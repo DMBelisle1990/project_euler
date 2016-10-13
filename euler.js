@@ -5,6 +5,10 @@
 
  var _ = require('underscore');
 
+ /**
+  * @param {int} max
+  * @returns {Array} primes
+  * */
 function getPrimesTo(max) {
 	var primes = [2, 3, 5];
 	for(var i = 7; i <= max; i+=2) {
@@ -26,7 +30,12 @@ function getPrimesTo(max) {
 	return primes;
 }
 
-// This will assume an array of primes is supplied to maximize speed
+/**
+ * This will assume an array of primes is supplied to maximize speed
+ *
+ * @param {int} num
+ * @returns {Array} result
+ * */
 function factorization(num) {
 	var max = Math.sqrt(num);
 	var result = arguments[1] || [];
@@ -47,6 +56,12 @@ function factorization(num) {
 	}
 }
 
+/**
+ * Dependencies: factorization
+ *
+ * @param {int} num
+ * @returns {int} result
+ * */
 function totient(num) {
 	var uniqFactors = _.uniq(factorization(num));
 	var result = num;
@@ -56,4 +71,11 @@ function totient(num) {
 	return Math.round(result);
 }
 
-
+/**
+ * @param {int} a
+ * @param {int} b
+ * @returns {int} 
+ * */
+function gcd(a,b) {
+  return b === 0 ? a : gcd(b, a % b);
+}
