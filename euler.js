@@ -3,6 +3,13 @@
  * Whenever speed improvements can be made they will first be made here
  */
 
+ // How to read in files
+ var fs = require('fs');
+
+ fs.readFile('filename.txt', function(error, data) {
+
+ });
+
  var _ = require('underscore');
 
  /**
@@ -74,8 +81,12 @@ function totient(num) {
 /**
  * @param {int} a
  * @param {int} b
- * @returns {int} 
+ * @returns {int}
  * */
 function gcd(a,b) {
   return b === 0 ? a : gcd(b, a % b);
 }
+
+// Exports
+module.exports.getPrimesTo = getPrimesTo;
+module.exports.totient = totient;

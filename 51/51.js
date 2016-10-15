@@ -1,22 +1,21 @@
-function primesTo(max) {
-  var primes = [2, 3, 5];
-  for(var i = 7; i < max; i+=2) {
-    var isPrime = true;
-    if(i % 5 === 0) {
-      continue;
-    }
-    for(var j = 1; primes[j] <= Math.sqrt(i); j++) {
-      if(i % primes[j] === 0) {
-        isPrime = false;
-        break;
-      }
-    }
-    if(isPrime) {
-      primes.push(i);
-    }
-  }
-  return primes;
-}
+var Euler = require('../euler.js');
 
-var primes = primesTo(1000000).filter(prime => prime > 56003);
-console.log(primes.length);
+// An 8 digit family must replace 3n digits
+// This is assuming a solution exists below 1 million
+var primes = Euler.getPrimesTo(1000000).filter(prime => {
+  if(prime <= 10000) {
+    return false;
+  };
+  prime += '';
+  prime = prime.substring(0, prime.length - 1);
+  // A family of 8 will contain a 0, 1, or 2 as it's smallest repeated digit
+  if(prime.split('0').length > 3 ||
+     prime.split('1').length > 3 ||
+     prime.split('2').length > 3) {
+    return true;
+  } else {
+    return false;
+  }
+});
+
+console.log(primes);

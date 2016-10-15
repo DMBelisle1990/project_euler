@@ -8,20 +8,10 @@ for(var tiles = 8; tiles <= MAX_TILES; tiles += 4) {
   ans++;
 }
 
-// refactor this
-for(var i = 3; i < sideLength.length; i += 2) {
+for(var i = 3; i < sideLength.length; i ++) {
   var total = sideLength[i];
-  for(var k = i - 2; k > 2; k -= 2) {
-    total += sideLength[k];
-    if(total <= MAX_TILES) {
-      ans++;
-    } else {
-      break;
-    }
-  }
-  var j = i + 1;
-  total = sideLength[j];
-  for(var k = j - 2; k > 3; k -= 2) {
+  var stop = (i % 2 === 0 ? 3 : 2);
+  for(var k = i - 2; k > stop; k -= 2) {
     total += sideLength[k];
     if(total <= MAX_TILES) {
       ans++;
