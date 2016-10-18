@@ -1,15 +1,29 @@
 var _ = require('underscore');
 
 function maxSum(nums) {
-  var result = [0];
+  var result = [nums[0]];
+  // Collapse the positives and negatives
   var sgn = (nums[0] < 0 ? -1 : 1);
-  for(var i = 0; i < nums.length; i++) {
+  for(var i = 1; i < nums.length; i++) {
     var l = result.length - 1;
-    while(nums[i] * sgn < 0) {
+    while(nums[i] * sgn >= 0) {
       result[l] += nums[i++];
     }
     sgn *= -1;
     result.push(nums[i]);
+  }
+
+  // Trim negative array ends
+  if(result[0] <= 0) {
+    result.splice(0, 1);
+  }
+  if(result[result.length-1] <= 0) {
+    result.splice(result.length-1, 1);
+  }
+
+  var max = result[0];
+  for(var i = 0; i < result.length; i++) {
+
   }
   return(result);
 }
@@ -40,7 +54,5 @@ for(var k = 56; k <= 4000000; k++) {
  * FIND MAX SUBSEQUENCE */
 
 grid.forEach(row => {
-
+  console.log(maxSum(row));
 });
-
-console.log(maxSum([-1,0,2,2,-2,-3,5]));
