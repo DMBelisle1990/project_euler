@@ -37,15 +37,22 @@ function getPrimesTo(max) {
 	return primes;
 }
 
+function factorial(x) {
+  return (x === 0 ? 1 : x * factorial(x - 1));
+}
+
+function combination(x, y) {
+  return factorial(x) / (factorial(y) * factorial(x - y));
+}
+
 /**
- * This will assume an array of primes is supplied to maximize speed
- *
  * @param {int} num
  * @returns {Array} result
  * */
 function factorization(num) {
 	var max = Math.sqrt(num);
-	var result = arguments[1] || [];
+  primes = arguments[1] || getPrimesTo(max + 1);
+	var result = arguments[2] || [];
 	var rootFound = false;
 	for(var i = 0; primes[i] <= max; i++) {
 		if(num % primes[i] === 0) {
@@ -56,7 +63,7 @@ function factorization(num) {
 
 	if(rootFound) {
 		result.push(primes[i]);
-		return factorization(num / primes[i], result);
+		return factorization(num / primes[i], primes, result);
 	} else {
 		result.push(num);
 		return result;
@@ -89,4 +96,7 @@ function gcd(a,b) {
 
 // Exports
 module.exports.getPrimesTo = getPrimesTo;
+module.exports.factorization = factorization;
 module.exports.totient = totient;
+module.exports.gcd = gcd;
+module.exports.combination = combination;
