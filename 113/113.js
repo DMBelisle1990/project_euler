@@ -8,7 +8,7 @@ for(var i = 10; i < 100; i++) {
 
 var deg = 2;
 
-while(nonBouncys.length / Math.pow(10, deg) > .01) {
+while(deg < 15) {
   var temp = prev.slice();
   prev.length = 0;
 
@@ -38,22 +38,4 @@ while(nonBouncys.length / Math.pow(10, deg) > .01) {
   deg++;
 }
 
-nonBouncys.sort((a,b) => a - b);
-var n = nonBouncys.filter(n => n < 1000000).length;
-var total = 1000000;
-nonBouncys = nonBouncys.filter(n => n >= 1000000);
-
-var searching = true;
-for(var i = 0; i < nonBouncys.length; i++) {
-  while(total < nonBouncys[i]) {
-    if(n / total === .01) {
-      console.log(total);
-      searching = false;
-    }
-    total++;
-  }
-  n++;
-  if(!searching) {
-    break;
-  }
-}
+console.log(nonBouncys.length);
