@@ -4,14 +4,14 @@ var possibleStarts = [], possibleEnds = []; // temp arrays used to get all valid
 
 /* HELPER FUNCTIONS */
 function inRange(num) {
-  return num > 999 && num < 10000 && (num+'')[2] != '0';
+  return num > 999 && num < 10000 && (num+'')[2] !== '0';
 }
 
 function valid(num) {
   num += '';
   var start = num.substring(0,2);
   var end = num.substring(2);
-  return validNums.indexOf(start) !== -1 && validNums.indexOf(end) !== -1;
+  return ~validNums.indexOf(start) && ~validNums.indexOf(end);
 }
 
 function getStart(num) {
@@ -23,14 +23,14 @@ function getEnd(num) {
 }
 
 function getNthPolyNums(n) {
-  var polyNum = [];
-  polyNum.push((n * (n + 1)) / 2);   // tri
-  polyNum.push(n * n);               // sq
-  polyNum.push((n * (3*n - 1)) / 2); // pent
-  polyNum.push(n * (2*n - 1));       // hex
-  polyNum.push((n * (5*n - 3)) / 2); // hept
-  polyNum.push(n * (3*n - 2));       // oct
-  return polyNum;
+  var polyNums = [];
+  polyNums.push((n * (n + 1)) / 2);   // tri
+  polyNums.push(n * n);               // sq
+  polyNums.push((n * (3*n - 1)) / 2); // pent
+  polyNums.push(n * (2*n - 1));       // hex
+  polyNums.push((n * (5*n - 3)) / 2); // hept
+  polyNums.push(n * (3*n - 2));       // oct
+  return polyNums;
 }
 
 /* IMPLIMENTATION */
@@ -59,6 +59,10 @@ for(var i = 10; !polyNum || polyNum[0] < 10000; i++) {
 var validNums = _.intersection(possibleStarts, possibleEnds);
 
 for(var i = 0; i < polyNums.length; i++) {
-  polyNums[i] = polyNums[i].filter( (num) => valid(num) );
-  console.log(polyNums[i].length);
+  polyNums[i] = polyNums[i].filter( num => valid(num) );
 }
+
+polyNums = _.flatten(polyNums);
+console.log(polyNums.length);
+polyNums = _.uniq(polyNums);
+console.log(polyNums.length);
