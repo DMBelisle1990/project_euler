@@ -1,41 +1,27 @@
-var _ = require('underscore');
-var nonBouncys = [1,2,3,4,5,6,7,8,9];
-var prev = []; // Used to build the next set of non bouncy numbers
-for(var i = 10; i < 100; i++) {
-  nonBouncys.push(i+'');
-  prev.push(i+'');
-}
+var inc = [1,1,1,1,1,1,1,1,1];
+var dec = [1,1,1,1,1,1,1,1,1];
+var ans = 9;
 
-var deg = 2;
+for(var i = 0; i < 101; i++) {
 
-while(deg < 15) {
-  var temp = prev.slice();
-  prev.length = 0;
+  var prevInc = inc.slice();
+  var prevDec = dec.slice();
+  inc.length = 0;
+  dec.length = 0;
 
-  var last = temp[0].length - 1;
-  temp.forEach(function(n) {
-    if(+n[0] > +n[last]) {
-      for(var i = +n[last]; i >= 0; i--) {
-        prev.push(n + i)
-        nonBouncys.push(n + i);
-      }
-    } else if(+n[0] < +n[last]) {
-      for(var i = +n[last]; i < 10; i++) {
-        prev.push(n + i);
-        nonBouncys.push(n + i);
-      }
-    } else {
-      for(var i = +n[last] + 1; i < 10; i++) {
-        prev.push(n + i);
-        nonBouncys.push(n + i);
-      }
-      for(var i = +n[last]; i >= 0; i--) {
-        prev.push(n + i)
-        nonBouncys.push(n + i);
-      }
+  for(var j = 0; j < prevInc.length; j++) {
+    for(var k = j; k < prevInc.length; k++) {
+      inc[k] = inc[k] || 0;
+      inc[k] += prevInc[j];
     }
-  });
-  deg++;
+  }
+
+  for(var j = 0; j < prevDec.length; j++) {
+    for(var k = prevDec[j] - 1; k >= 0; k++) {
+      dec[k] = dec[k] || 0;
+      dec[k] += prevInc[j];
+    }
+  }
+
 }
 
-console.log(nonBouncys.length);
