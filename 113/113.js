@@ -1,27 +1,26 @@
-var inc = [1,1,1,1,1,1,1,1,1];
-var dec = [1,1,1,1,1,1,1,1,1];
-var ans = 9;
+/* SOLUTION EXPLANATION
+ *
+ * If a number is increasing and ends in n then there 10 - n possible numbers that may follow
+ * Similar logic applies to a decreasing number
+ *
+ * If we start with an array of 1's and continuosly stepSum it for increasing and decreasing cases
+ * and remove the double count of nums consisting of only a single digit we will get the answer
+ * */
 
-for(var i = 0; i < 101; i++) {
-
-  var prevInc = inc.slice();
-  var prevDec = dec.slice();
-  inc.length = 0;
-  dec.length = 0;
-
-  for(var j = 0; j < prevInc.length; j++) {
-    for(var k = j; k < prevInc.length; k++) {
-      inc[k] = inc[k] || 0;
-      inc[k] += prevInc[j];
-    }
-  }
-
-  for(var j = 0; j < prevDec.length; j++) {
-    for(var k = prevDec[j] - 1; k >= 0; k++) {
-      dec[k] = dec[k] || 0;
-      dec[k] += prevInc[j];
-    }
-  }
-
+function stepSum(array) {
+ for(var i = 1; i < array.length; i++) {
+   array[i] += array[i - 1];
+ }
+ return array;
 }
 
+var start = [1,1,1,1,1,1,1,1,1];
+var ans = 9;
+
+for(var i = 1; i < 100; i++) {
+  start = stepSum(start);
+  // Subtract last element since you can not increase into 0 
+  ans += 2 * dec.reduce((sum, n) => sum += n) - 10 - dec[dec.length - 1];
+}
+
+console.log(ans);
