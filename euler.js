@@ -4,11 +4,11 @@
  */
 
  // How to read in files
- var fs = require('fs');
-
- fs.readFile('filename.txt', function(error, data) {
-
- });
+ // var fs = require('fs');
+ //
+ // fs.readFile('filename.txt', function(error, data) {
+ //
+ // });
 
  var _ = require('underscore');
 
@@ -71,8 +71,6 @@ function factorization(num) {
 }
 
 /**
- * Dependencies: factorization
- *
  * @param {int} num
  * @returns {int} result
  * */
