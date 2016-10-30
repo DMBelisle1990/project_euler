@@ -37,6 +37,10 @@ function getPrimesTo(max) {
 	return primes;
 }
 
+function isPrime(n) {
+
+}
+
 function factorial(x) {
   return (x === 0 ? 1 : x * factorial(x - 1));
 }
@@ -94,6 +98,7 @@ function gcd(a,b) {
 
 // Exports
 module.exports.getPrimesTo = getPrimesTo;
+module.exports.isPrime = isPrime;
 module.exports.factorization = factorization;
 module.exports.totient = totient;
 module.exports.gcd = gcd;

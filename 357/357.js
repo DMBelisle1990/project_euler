@@ -1,40 +1,37 @@
-var primes = [2];
-for(var i = 3; i < 50002; i+=2) {
-	if(i % 5 === 0) {
-		continue;
-	}
-	var add = true;
-	for(var j = 1; primes[j] <= Math.sqrt(i); j++) {
-		if(i % primes[j] === 0) {
-			add = false;
-			break;
-		}
-	}
-	if(add) {
-		primes.push(i);
-	}
+var Euler = require('../euler.js');
+var isPrime = [];
+
+console.time('357');
+var primes = Euler.getPrimesTo(100000000);
+while(primes.length > 0) {
+	isPrime[primes.pop()] = true;
 }
 
-console.log('primes done');
+console.log('primes generated');
 
-var n = 2;
-var sum = 0;
+var ans = 1 + 2 + 6 + 10;
+var n = 18;
+
+var inc = [4, 8, 8]; // incrimenter to avoid evens ending in 4 and 6
+var idx = 0;
 while(n <= 100000000) {
-	sum += n;
-	for(var i = 1; i < Math.sqrt(n); i++) {
-		if(n % i !== 0) {
-			continue;
-		} else {
-			if(primes.indexOf(i + n / i) > -1) {
-				continue;
-			} else {
-				sum -= n;
+	if(isPrime[n + 1]) {
+		var sqrt = Math.sqrt(n);
+		var add = true;
+		for(var i = 1; i < sqrt; i++) {
+			if( n % i === 0 && isPrime[i + (n / i)] === undefined) {
+				add = false;
 				break;
 			}
 		}
+		if(add) {
+			ans += n;
+		}
 	}
-	n += (n % 10 === 0 ? 12 : 8);
-	console.log(n);
+	if(n % 1000 === 0) console.log(n);
+	n += inc[idx];
+	idx = (++idx) % 3;
 }
 
-console.log(sum);
+console.log(ans);
+console.timeEnd('357');
