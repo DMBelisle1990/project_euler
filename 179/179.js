@@ -70,7 +70,7 @@ for(var i = 0; i <= 10000000; i++) {
   numDivisors.push(1);
 }
 
-for(var i = 2; i < 10000000; i++) {
+for(var i = 2; i <= 10000000; i++) {
   for(var j = 0; j < numDivisors.length; j += i) {
     numDivisors[j]++;
   }
