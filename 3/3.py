@@ -14,7 +14,7 @@ primes = primesTo(limit)
 
 # Smarter algorithm
 # Keep finding largest factor until it is prime
-for i in range(0, len(primes)):
+for i in range(len(primes)):
     if n % primes[i] == 0:
         n /= primes[i]
     if n in primes:
