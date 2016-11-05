@@ -55,7 +55,7 @@ function combination(x, y) {
  * */
 function factorization(num) {
 	var max = Math.sqrt(num);
-  var primes = arguments[1] || getPrimesTo(max + 1);
+  	var primes = arguments[1] || getPrimesTo(max + 1);
 	var result = arguments[2] || [];
 	var rootFound = false;
 	for(var i = 0; primes[i] <= max; i++) {
