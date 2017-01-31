@@ -5,7 +5,6 @@ for(var i = 2; i < 333333334; i++) {
     temp *= (i - j)/4;
     if(temp % 1 === 0) {
       ans += 3*i + j;
-      console.log(temp);
 
     }
   }
